@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <link href="hangman.css" rel="stylesheet">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adam Asmaca Oyunu</title>
+</head>
+<body>
+    <div>
+        <h1 id="baslik">ADAM ASMACA OYUNU</h1><br><br><br>
+        <h1 id='displayString'></h1>
+        <div id='hangman'></div>
+        <h2 id='fails'>Hata Sayısı: 0</h2>
+    </div>
+    <div id="resim">
+    <img id= "rsm" src=""/>
+    </div> 
+</body>
+<script>
+    alert("Hata sınırınız 7'dir. İyi oyunlar.");
+    var picture = document.getElementById("rsm");
+const wordList = [
+    "cicek","bocek","karanfil","araba","sınıf","ders","tahta","portakal",
+    "elma","ev"
+  ];
+const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const inputButtons = [];
+displayPhrase = '';
+guesses= {};
+wordOrPhrase = word().toUpperCase();
+console.log(wordOrPhrase);
+for(let i = 0; i<alphabets.length; i++){
+    guesses[alphabets.charAt(i)] = false;
+}
+for(let i = 0; i<wordOrPhrase.length; i++){
+    displayPhrase += '*';
+}
+document.getElementById("displayString").innerHTML=displayPhrase;
+var guess;
+fails = 0;
+letterHolder = document.createElement('div');
+letterHolder.setAttribute('id','letterHolder');
+for(let i = 0; i<alphabets.length; i++){
+    bttn = document.createElement('button');
+    bttn.innerHTML = alphabets[i];
+    bttn.setAttribute('id', alphabets[i]);
+    inputButtons[i] = bttn;
+    bttn.onclick = function(event){   
+        if(fails==0)
+        {
+            picture.src = "./images/0.jpg";
+        }
+        else if(fails==1)
+        {
+            picture.src = "./images/1.jpg";
+        }
+        else if(fails==2)
+        {
+            picture.src = "./images/2.jpg";
+        }
+        else if(fails==3)
+        {
+            picture.src = "./images/3.jpg";
+        }
+        else if(fails==4)
+        {
+            picture.src = "./images/4.jpg";
+        }
+        else if(fails==5)
+        {
+            picture.src = "./images/5.jpg";
+        }
+        else if(fails==6)
+        {
+            picture.src = "./images/6.jpg";
+            alert("Oyunu Kaybettiniz!");
+            window.location.reload();
+        } 
+        event.srcElement.disabled = true;
+        guess = event.srcElement.id
+        updateDisplay(guess);
+        displayErrors(guess);
+    }
+    letterHolder.appendChild(inputButtons[i]);
+}
+hangman.appendChild(letterHolder);
+function displayErrors(guess){
+    if(!guesses[guess]){fails++;}
+    document.getElementById('fails').innerHTML = 'Hata Sayısı: ' + fails.toString();
+}
+function updateDisplay(guess){
+    var successful = false;
+    for(let i = 0; i<wordOrPhrase.length; i++){
+        guesses[guess] = (wordOrPhrase.charAt(i) == guess)||guesses[guess];
+        if(wordOrPhrase.charAt(i) == guess){
+            displayPhrase = displayPhrase.split('');
+            displayPhrase[i] = guess;
+            displayPhrase = displayPhrase.join('');
+        }
+    }
+    document.getElementById('displayString').innerHTML = displayPhrase;
+}
+    function word() {
+        return wordList[Math.floor(Math.random() * wordList.length)];
+    }
+</script>
+</html>
